@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> User data crud</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Import Datatable Library -->
+  <!-- Data Table-->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+</head>
+<style>
+  label.error {
+    color: red;
+  }
+  #user-modal label:after {
+    content:"*";
+    color: red;
+  }
+</style>
+<body>
+  <div class="container border border-success rounded mt-3" style="background-color: #f2f2f2;">
+    <div class="row mt-4">
+      <div class="col-sm-12 text-center">
+        <h3>F100 - QUẢN TRỊ NGƯỜI DÙNG</h3>
+      </div>
+    </div>
+    <div class="row mb-5 mt-3">
+      <div class="col-sm-2 text-center mt-1">
+        <label for="">Role</label>
+      </div>
+      <div class="col-sm-8">
+        <select name="" id="select-role" class="form-control">
+          <option value="">Chọn một role</option>
+          <option value="5">Admin</option>
+          <option value="8">Manager</option>
+          <option value="11">Teacher</option>
+          <option value="13">Staff</option>
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <button class=" btn btn-success" id="btn-filter-role"><i class="fa fa-filter"></i> Lọc dữ liệu</button>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-sm-4">
+        <button class="btn btn-info" id="btn-add-user"><i class="fa fa-plus"></i> Thêm người dùng</button>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-sm-12">
+        <table class="table table-striped table-bordered" id="user-table">
+          <thead style="background-color: #17a2b8; color: white;">
+            <tr>
+              <td>STT</td>
+              <td>Username</td>
+              <td>Firstname</td>
+              <td>Lastname</td>
+              <td>Age</td>
+              <td>Email</td>
+              <td>Role</td>
+              <td>Action</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Vùng Modal -->
+
+  <!-- Add/edit voucher modal -->
+  <div>
+    <div id="user-modal" class="modal bd-example-modal-lg fade shadsow" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="h5-modal-title">F200 - CẬP NHẬT DỮ LIỆU NGƯỜI DÙNG</h5>
+            <button class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <form action="" id="form-user">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="row form-group">
+                    <div class="col-sm-4">
+                      <label for="">Username</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input name="username" type="text" class="form-control" id="inp-username-modal">
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-4">
+                      <label for="">Firstname</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input name="firstname" type="text" class="form-control" id="inp-fisrtname-modal">
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-4">
+                      <label for="">Role</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <select name="role" id="select-role-modal" class="form-control">
+                        <option value="">Chọn role</option>
+                        <option value="5">Admin</option>
+                        <option value="8">Manager</option>
+                        <option value="11">Teacher</option>
+                        <option value="13">Staff</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="row form-group">
+                    <div class="col-sm-4">
+                      <label for="">Email</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input name="email" type="text" class="form-control" id="inp-email-modal">
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-4">
+                      <label for="">Lastname</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input name="lastname" type="text" class="form-control" id="inp-lastname-model">
+                    </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col-sm-4">
+                      <label for="">Age</label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input name="age" type="number" class="form-control" id="inp-age-modal">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" id="btn-cancel" data-dismiss="modal">Cancel</button>
+              <button class="btn btn-primary" id="btn-save">Save Data</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Delete confirm modal -->
+  <div>
+    <div class="modal fade" tabindex="-1" id="delete-confirm-user">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="h5-modal-title">User Delete Confirmation</h5>
+            <button class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <label>Bạn có chắc chắn muốn xóa user này không?</label>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-danger" id="btn-delete-user">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+​<script>
+  /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+  /* Mảng userObjects là mảng chứa dữ liệu user. Từng phần tử là object
+  * id: tự tăng lên 1. Ví dụ, hiện id lớn nhất là 6, thì khi thêm user mới, id sẽ là 7
+  */
+  var gUserObjects = [
+        {
+          id: 2,
+          username: "quannv",
+          firstname: "Ngo Van",
+          lastname: "Quan",
+          age: 18,
+          email: "quan@gmail.com",
+          roleId: 5
+        },
+        {
+          id: 3,
+          username: "longdh",
+          firstname: "Do Hoang",
+          lastname: "Long",
+          age: 19,
+          email: "long@gmail.com",
+          roleId: 8
+        },
+        {
+          id: 4,
+          username: "hiendt",
+          firstname: "Do Thi",
+          lastname: "Hien",
+          age: 29,
+          email: "hien@gmail.com",
+          roleId: 11
+        },
+        {
+          id: 6,
+          username: "lanht",
+          firstname: "Ho Thi",
+          lastname: "Lan",
+          age: 27,
+          email: "lan@gmail.com",
+          roleId: 13
+        }
+  ];
+
+// TODO: Điền tiếp các phần tử tiếp theo của mảng Role (xem trong slide task specification)
+  var gRoleObjects = [
+        {
+          roleId: 5,
+          roleName: "Admin" 
+        },
+        {
+          roleId: 8,
+          roleName: "Manager" 
+        },
+        {
+          roleId: 11,
+          roleName: "Teacher" 
+        },
+        {
+          roleId: 13,
+          roleName: "Staff" 
+        },
+  ];
+  // biến lưu trạng thái của form
+  const gFORM_MODE_NORMAL = "Normal";
+  const gFORM_MODE_INSERT = "Insert";
+  const gFORM_MODE_UPDATE = "Update";
+  const gFORM_MODE_DELETE = "Delete";
+
+  // biến toàn cục cho trạng thái của form: mặc định ban đầu là trạng thái Normal
+  var gFormMode = gFORM_MODE_NORMAL;
+  // Biến toàn cục để lưu trữ id voucher đang đc update or delete. Mặc định = 0;
+  var gUserId = 0;
+
+  // Biến mảng hằng số chứa danh sách tên các thuộc tính
+  const gCOL_USER = ["stt", "username", "firstname", "lastname", "age", "email", "roleId", "action"];
+  
+  // Biến mảng toàn cục định nghĩa chỉ số các cột tương ứng
+  const gCOL_STT = 0;
+  const gCOL_USERNAME = 1;
+  const gCOL_FIRTNAME = 2;
+  const gCOL_LASTNAME = 3;
+  const gCOL_EMAIL = 4;
+  const gCOL_AGE = 5;
+  const gCOL_ROLE = 6;
+  const gCOL_ACTION = 7;
+
+  // Biến toàn cục để hiển lưu STT
+  var gSTT = 1;
+
+  // Khai báo DataTable & mapping collumns
+  var gUserTable = $("#user-table").DataTable({
+    columns: [
+      { data: gCOL_USER[gCOL_STT]},
+      { data: gCOL_USER[gCOL_USERNAME]},
+      { data: gCOL_USER[gCOL_FIRTNAME]},
+      { data: gCOL_USER[gCOL_LASTNAME]},
+      { data: gCOL_USER[gCOL_EMAIL]},
+      { data: gCOL_USER[gCOL_AGE]},
+      { data: gCOL_USER[gCOL_ROLE]},
+      { data: gCOL_USER[gCOL_ACTION]},
+    ],
+    columnDefs: [
+      { // định nghĩa lại cột STT
+        targets: gCOL_STT,
+        render: function() {
+          return gSTT ++;
+        }
+      },
+      {
+        //định nghĩa lại cột role
+        targets: gCOL_ROLE,
+        render: function(role) {
+          return getRoleNameByRoleId(role);
+        }
+      },
+      { // định nghĩa lại cột action
+        targets: gCOL_ACTION,
+        defaultContent: `
+          <img class="edit-user" src="https://icons.iconarchive.com/icons/bokehlicia/captiva/256/edit-icon.png" style="width: 25px;cursor:pointer;">
+          <img class="delete-user" src="https://icons.iconarchive.com/icons/saki/nuoveXT/128/Actions-button-cancel-icon.png" style="width: 25px;cursor:pointer; margin-left: 14px;">
+        `
+      }
+    ]
+  });
+  /*** REGION 2 - Vùng gán / thực thi sự kiện cho các elements */ 
+  onPageLoading()
+  //sự kiện nút filter được click
+  $("#btn-filter-role").on("click", function(){
+    onBtnFilterUserRole();
+  });
+  //sự kiện nút add user được click
+  $("#btn-add-user").on("click", function() {
+    onBtnAddNewUser();
+  });
+  // sự kiện cho nút edit data
+  $("#user-table").on("click", ".edit-user", function() {
+    onIconEditUser(this);
+  });
+  // sự kiện cho nút edit data
+  $("#user-table").on("click", ".delete-user", function() {
+    onIconDeleteUser(this);
+  });
+  //sự kiện khi nút sava user được click
+  $("#btn-save").on("click", function(){
+    onBtnSaveDataUser();
+  });
+
+  $("#btn-delete-user").on("click", function() {
+    onBtnConfirmDeleteUser(this);
+  });
+  $("#user-modal").on("hidden.bs.modal", function() {
+    resetFormToNormal();
+  });
+
+  $("#delete-confirm-user").on("hidden.bs.modal", function() {
+    resetFormToNormal();
+  });
+  //$("#user-modal").modal("show");
+  //$("#delete-confirm-user").modal("show");
+  /*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+  function onPageLoading() {
+    "use strict";
+    //load data user vào bảng
+    loadUserToTable(gUserObjects);
+    gFormMode = gFORM_MODE_NORMAL;
+  }
+  // hàm xử lý khi nút filter được click
+  function onBtnFilterUserRole() {
+    "use strict";
+    //khai báo biến role
+    var vUserRole = {
+      roleId: ""
+    };
+    //lấy data
+    getUserRole(vUserRole);
+    // validate
+    var vIsValidateRole = validateRole(vUserRole);
+    if (vIsValidateRole) {
+      //lọc data va hiển thị ra bảng
+      filterRoleToTable(vUserRole);
+    }
+    else {
+      loadUserToTable(gUserObjects);
+    }
+  }
+  //hàm xử lí khi nút add user được click
+  function onBtnAddNewUser() {
+    "use strict";
+    //chuyển đổi trạng thái form về insert
+    gFormMode = gFORM_MODE_INSERT;
+    //gọi modal
+    $("#user-modal").modal("show");
+  }
+
+  // hàm xử lý khi nút edit được click
+  function onIconEditUser(paramIconEdit) {
+    "use strict";
+    gFormMode = gFORM_MODE_UPDATE;
+    gUserId = getIdDataFromButton(paramIconEdit);
+    console.log(gUserId);
+    // 
+    addUserDataToModal(gUserId);
+    // hiển thị modal lên
+    $("#user-modal").modal("show");
+  }
+  // hàm xử lý  khi nút delete được click
+  function onIconDeleteUser(paramIconDelete) {
+    "use strict";
+    // chuyển đổi trạng thái form về delete
+    gFormMode = gFORM_MODE_DELETE;
+    // lưu thông tin userId đang được delete vào biến toàn cục
+    gUserId = getIdDataFromButton(paramIconDelete);
+    console.log(gUserId);
+    // hiển thị modal lên confirm
+    $("#delete-confirm-user").modal("show");
+  }
+
+  function onBtnSaveDataUser() {
+    "use strict";
+    $('#form-user').submit(function(event) {
+      return false;
+    });
+    //vailidate và thêm / sửa data
+    validateDataUser();
+  }
+  // hàm xử lý xóa user khi nút confirm được click
+  function onBtnConfirmDeleteUser() {
+    "use strict";
+    // b1
+    // b2
+    // b3: xử lý việc delete
+    deleteUser();
+    // b4: thông báo, cập nhật và reset
+    loadUserToTable(gUserObjects);
+    resetFormToNormal();
+    swal("Đã xóa dữ liệu user thành công");
+  }
+  /*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+  //hàm tìm kiếm roleName theo roleId
+  function getRoleNameByRoleId(paramRoleId) {
+    "use strict";
+    var vRoleFound = false;
+    var vResultRoleName = null;
+    var vIndex = 0;
+    while(!vRoleFound && vIndex < gRoleObjects.length) {
+      if(gRoleObjects[vIndex].roleId == paramRoleId) {
+        vRoleFound = true;
+        vResultRoleName = gRoleObjects[vIndex].roleName;
+      }
+      else {
+        vIndex ++;
+      }
+    }
+    return vResultRoleName;
+  }
+  // hàm thực hiện việc đôr dữ liệu user vào bảng
+  function loadUserToTable(paramUserArray) {
+    "use strict";
+    gSTT = 1;
+    gUserTable.clear();
+    gUserTable.rows.add(paramUserArray);
+    gUserTable.draw();
+  }
+  //hàm lấy data role selected
+  function getUserRole(paramUserRole) {
+    "use strict";
+    var vSelectRole = $("#select-role");
+    paramUserRole.roleId = vSelectRole.val();
+  }
+  //validate data role
+  function validateRole(paramUserRole) {
+    "use strict";
+    if(paramUserRole.roleId === "") {
+      return false;
+    }
+    return true;
+  }
+  //hàm tìm kiếm đúng role và hiển thị lại bảng
+  function filterRoleToTable(paramUserRole) {
+    "use strict";
+    var vFilterRole = [];
+    $(gUserObjects).each(function(bI, dataUser) {
+      if (dataUser.roleId == paramUserRole.roleId) {
+        vFilterRole.push(dataUser);
+      }
+    });
+    loadUserToTable(vFilterRole);
+  }
+  // hàm validate data và xử lý khi validate thành công
+  function validateDataUser() {
+    "use strict";
+
+    $.validator.addMethod('requiredNotBlank', function(value, element) {
+    return $.validator.methods.required.call(this, $.trim(value), element);
+    }, $.validator.messages.required);
+    
+    jQuery.validator.addMethod("alphanumeric", function(value, element) {
+        return this.optional(element) || /^[a-zA-Z0-9 ]+$/.test(value);
+    }, "Username chỉ nhập chữ và sô");
+
+    $('#form-user').rules('add', 'requiredNotBlank');
+    $("#form-user").validate({
+      rules: {
+        username: {
+          required: true,
+          requiredNotBlank: true,
+          alphanumeric: true
+        },
+        firstname: {
+          required: true,
+          requiredNotBlank: true
+        },
+        lastname: {
+          required: true,
+          requiredNotBlank: true
+        },
+        role: "required",
+        age: {
+          required: true,
+          min: 10,
+          max: 180
+        },
+        email: {
+          required: true,
+          email: true,
+          requiredNotBlank: true
+        }
+      },
+      messages: {
+        username: {
+          required: "Vui lòng nhập username",
+
+        },
+        firstname: "Vui lòng nhập firstname",
+        lastname: "Vui lòng nhập lastname",
+        role: "Vui lòng chọn role",
+        age: {
+          required: "Vui lòng nhập age",
+          min: "Tuổi phải lơn hơn 10",
+          max: "Tuổi phải nhỏ hơn 180"
+        },
+        email: {
+          required: "Vui lòng nhập email",
+          email: "Vui lòng nhập đúng định dạng name@domain.com"
+        }
+      },
+      submitHandler: function(form) {
+        addNewUserToTable();
+      }
+    });
+  }
+  //hàm xử lý thêm hoặc sửa user khi validate xong
+  function addNewUserToTable() {
+    "use strict";
+    // khai báo đối tượng
+    var vNewUserObj = {
+      id: 0,
+      username: "",
+      firstname: "",
+       lastname: "",
+      age: 0,
+      email: "",
+      roleId: 0
+    }
+    //thu thập dữ liệu
+    getUserData(vNewUserObj);
+    var vIsValidate = validate(vNewUserObj);
+      if (vIsValidate === true) {
+      //thêm user vào userarray
+      saveUserObj(vNewUserObj);
+      //load lại table
+      loadUserToTable(gUserObjects);
+      //reset form
+      resetFormToNormal();
+      swal("Đã lưu dữ liệu user thành công");
+    }
+    else {
+      console.assert(vIsValidate, "Invaid Data");
+    }
+  }
+  //hàm check username và email có trùng không
+  function validate(paramUserData) {
+    "use strict";
+    var vCheck = 0
+    if (checkIsUsernameExist(paramUserData.username) === true) {
+      swal("Username đã tồn tại");
+    }
+    else {
+      vCheck = 1;
+    }
+    if (checkIsEmailExist(paramUserData.email) === true) {
+      swal("Email đã tồn tại");
+    }
+    else {
+      vCheck += 1;
+    }
+    if (vCheck === 2) {
+      return true
+    }
+    else {
+      return false;
+    }
+  }
+  // hàm thu thập thông tin user
+  function getUserData(paramUserData) {
+    "use strict";
+    // nếu đang thêm mới thì lấy id tiếp theo
+    if(gFormMode === gFORM_MODE_INSERT) {
+      paramUserData.id = getNextId();
+    }
+    // nếu đang sửa, thì id là id đang được sửa
+    else if(gFormMode === gFORM_MODE_UPDATE) {
+      paramUserData.id = gUserId;
+    }
+    paramUserData.username = $("#inp-username-modal").val().trim();
+    paramUserData.firstname = $("#inp-fisrtname-modal").val().trim();
+    paramUserData.lastname = $("#inp-lastname-model").val().trim();
+    paramUserData.age = $("#inp-age-modal").val().trim();
+    paramUserData.email = $("#inp-email-modal").val().trim();
+    paramUserData.roleId = $("#select-role-modal").val();
+  }
+  // hàm check và tự động thêm userId
+  function getNextId() {
+    "use strict";
+    var vNextId = 0;
+    // nếu mảng chưa có phần tử nào, thì id sẽ bắt đầu từ 1
+    if(gUserObjects.length == 0) {
+      vNextId = 1;
+    }
+    else { // id tiếp theo bằng id của phần tử cuối cùng cộng thêm 1
+      vNextId = gUserObjects[gUserObjects.length - 1].id + 1;
+    }
+    return vNextId;
+  }
+
+   // hàm thực hiện việc lưu dữ liệu (thêm / sửa)
+   function saveUserObj(paramUserData) {
+    "use strict";
+    // nếu đang thêm, thì thực hiện thêm dữ liệu
+    if(gFormMode === gFORM_MODE_INSERT) {
+      // thêm user
+      insertUser(paramUserData);
+    }
+    // nếu đang là sửa, thì thực hiện sửa dữ liệu
+    else if(gFormMode === gFORM_MODE_UPDATE) {
+      // sửa user
+      updateUser(paramUserData);
+    }
+  }
+
+   // hàm thực hiện việc thêm user
+   function insertUser(paramUserData) {
+    "use strict";
+    gUserObjects.push(paramUserData);
+  }
+
+  // hàm thực hiện việc sửa user
+  function updateUser(paramUserData) {
+    "use strict";
+    // index + object mới cần thay thế
+    var vIndex = getIndexFormUserId(paramUserData.id);
+    // thay thế 1 user object tại vị trí index bằng user mới
+    gUserObjects.splice(vIndex, 1, paramUserData);
+  }
+  // hàm tìm kiếm số thứ tự của user trong mảng theo userId
+  function getIndexFormUserId(paramUserId) {
+    "use strict";
+    var vUserIdIndex = -1;
+    var vUserFound = false;
+    var vLoopIndex = 0;
+    while(!vUserFound && vLoopIndex < gUserObjects.length) {
+      if(gUserObjects[vLoopIndex].id === paramUserId) {
+        vUserIdIndex = vLoopIndex;
+        vUserFound = true;
+      }
+      else {
+        vLoopIndex ++;
+      }
+    }
+    return vUserIdIndex;
+  }
+
+  //hàm lấy id theo row của icon 
+  function getIdDataFromButton(paramIcon) {
+    "use strict";
+    var vTableRow = $(paramIcon).parents("tr");
+    var vUserRowData = gUserTable.row(vTableRow).data();
+    return vUserRowData.id;
+  }
+  // hàm thêm user data vào modal khi ấn nút edit
+  function addUserDataToModal(paramUserId) {
+    "use strict";
+    var vUserIndex = getIndexFormUserId(paramUserId);
+    $("#inp-username-modal").val(gUserObjects[vUserIndex].username);
+    $("#inp-fisrtname-modal").val(gUserObjects[vUserIndex].firstname);
+    $("#inp-lastname-model").val(gUserObjects[vUserIndex].lastname);
+    $("#inp-age-modal").val(gUserObjects[vUserIndex].age);
+    $("#inp-email-modal").val(gUserObjects[vUserIndex].email);
+    $("#select-role-modal").val(gUserObjects[vUserIndex].roleId);
+  }
+  // hàm xóa user tại vị trí button delete được click
+  function deleteUser() {
+    "use strict";
+    // index
+    var vIndex = getIndexFormUserId(gUserId);
+    // xóa user Object
+    gUserObjects.splice(vIndex, 1);
+  }
+
+  // hàm kiểm tra xem mã username đã tồn tại chưa
+  // return true nếu đã tồn tại; và ngược lại
+  function checkIsUsernameExist(paramUsername) {
+    "use strict";
+    var vIsFound = false;
+    var vIndex = 0 ;
+    //Nếu đang thêm mới thì chỉ cần kiểm tra xem username mới có bị trùng không
+    if(gFormMode === gFORM_MODE_INSERT) {
+      while(!vIsFound && vIndex < gUserObjects.length) {
+        if(gUserObjects[vIndex].username === paramUsername) {
+          vIsFound = true;
+        }
+        else {
+          vIndex ++;
+        }
+      }
+    }
+    //Nếu đang update kiểm tra xem username nhập vào có tồn tại chưa và ko trùng với cái của tôi!
+    else if(gFormMode === gFORM_MODE_UPDATE) {
+      while(!vIsFound && vIndex < gUserObjects.length) {
+        if(gUserObjects[vIndex].username === paramUsername 
+          && gUserObjects[vIndex].id !== gUserId) {
+          vIsFound = true;
+        }
+        else {
+          vIndex ++;
+        }
+      }
+    }
+
+    return vIsFound;
+  }
+
+  function checkIsEmailExist(paramEmail) {
+    "use strict";
+    var vIsFound = false;
+    var vIndex = 0 ;
+    //Nếu đang thêm mới thì chỉ cần kiểm tra xem email mới có bị trùng không
+    if(gFormMode === gFORM_MODE_INSERT) {
+      while(!vIsFound && vIndex < gUserObjects.length) {
+        if(gUserObjects[vIndex].email === paramEmail) {
+          vIsFound = true;
+        }
+        else {
+          vIndex ++;
+        }
+      }
+    }
+    //Nếu đang update kiểm tra xem email nhập vào có tồn tại chưa và ko trùng với cái của tôi!
+    else if(gFormMode === gFORM_MODE_UPDATE) {
+      while(!vIsFound && vIndex < gUserObjects.length) {
+        if(gUserObjects[vIndex].email === paramEmail 
+          && gUserObjects[vIndex].id !== gUserId) {
+          vIsFound = true;
+        }
+        else {
+          vIndex ++;
+        }
+      }
+    }
+
+    return vIsFound;
+  }
+  // hàm thực hiện reset form về trạng thái ban đầu
+  function resetFormToNormal() {
+    "use strict";
+    // đổi trạng thái về normal
+    gFormMode = gFORM_MODE_NORMAL;
+    var validator = $( "#form-user" ).validate();
+    // xóa trắng form trên modal
+    validator.resetForm();
+    $("#form-user").trigger("reset");
+    
+    $("#user-modal").modal("hide");
+    $("#delete-confirm-user").modal("hide");
+    // cập nhật gVoucherId
+    gVoucherId = 0;
+  }
+</script>
+</body>
+</html>
